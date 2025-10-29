@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/style.css"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Vehicles by Year</title>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Home</a> |
+      <span>Years: $$$NAV_YEARS$$$</span>
+    </nav>
+
+    <h1>Year: $$$YEAR$$$</h1>
+    <div class="pager">
+      <a href="$$$PREV_LINK$$$">⟨ Prev Year</a> |
+      <a href="$$$NEXT_LINK$$$">Next Year ⟩</a>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Make</th><th>Model</th><th>Type</th><th>Region</th><th>Range</th></tr>
+      </thead>
+      <tbody>
+        $$$YEAR_ROWS$$$
+      </tbody>
+    </table>
+  </body>
+</html>

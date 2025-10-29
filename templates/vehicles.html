@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/style.css"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Vehicles by Type</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Home</a> |
+        <span>Types: $$$NAV_TYPES$$$</span>
+      </nav>
+    </header>
+
+    <h1>$$$VEHICLE_TYPE$$$ <small>(type)</small></h1>
+
+    <div class="pager">
+      <a id="prev" href="$$$PREV_LINK$$$">⟨ Prev Type</a>
+      |
+      <a id="next" href="$$$NEXT_LINK$$$">Next Type ⟩</a>
+    </div>
+
+    <section>
+      <h2>Vehicles</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Make</th><th>Model</th><th>Year</th><th>Region</th><th>Range (mi)</th><th>Battery (kWh)</th><th>Energy (kWh/100mi)</th><th>CO₂ Saved (tons)</th><th>Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          $$$VEHICLE_ROWS$$$
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Average Range by Year (for this type)</h2>
+      <canvas id="rangeChart" width="800" height="300"></canvas>
+    </section>
+
+    <script>
+      const labels = $$$CHART_LABELS$$$;
+      const data = $$$CHART_DATA$$$;
+
+      if (labels && labels.length > 0) {
+        const ctx = document.getElementById('rangeChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Average Range (mi)',
+              data: data,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      } else {
+        document.getElementById('rangeChart').parentElement.innerHTML = '<p>No numeric range data available for chart.</p>';
+      }
+    </script>
+  </body>
+</html>
