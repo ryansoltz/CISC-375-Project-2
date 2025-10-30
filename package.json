@@ -3,10 +3,10 @@
     "description": "Dynamic Server",
     "version": "1.0.0",
     "author": {
-        "name": "",
-        "email": ""
+        "name": "Ryan Soltis",
+        "email": "solt4052@stthomas.edu"
     },
-    "contributors": [],
+    "contributors": ["Sean McNiesh"],
     "repository": {},
     "dependencies": {
         "express": "^5.1.0",
