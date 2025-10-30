@@ -175,6 +175,24 @@ app.get('/types', (req, res) => {
     });
 });
 
+// Years Page
+app.get('/years', (req, res) => {
+    const sql = 'SELECT DISTINCT Year AS val FROM electric_vehicles ORDER BY Year ASC;';
+    db.all(sql, [], (err, rows) => {
+        const fallback = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+        const types = (rows && rows.length) ? rows.map(r => r.val) : fallback;
+
+        fs.readFile(path.join(template_dir, 'years.html'), 'utf8', (rErr, data) => {
+            if (rErr) {
+                console.error("Template read error:", rErr.message);
+                return res.status(500).type('txt').send("Server Error");
+            }
+            const type_list = types.map(t => `<li><a href="/year/${encodeURIComponent(t)}">${t}</a></li>`).join('\n');
+            return res.status(200).type('html').send(data.replace('$$$TYPE_LIST$$$', type_list));
+        });
+    });
+});
+
 //
 // Default 404 handler
 //
