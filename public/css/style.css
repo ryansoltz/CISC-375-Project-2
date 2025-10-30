@@ -1,7 +1,22 @@
-h1 {
-    font: normal, bold, 1.5rem, Tahoma, sans-serif;
-}
+
 
 body {
-    background-color: blueviolet;
+    background-color: rgb(193, 193, 193);
+}
+
+h1 {
+    font-size: 2rem;
+    font-family: Tahoma, sans-serif;
+}
+
+li {
+    font-family: "Arial Rounded MT", sans-serif;
+}
+
+a {
+    font-family: "Arial Rounded MT", sans-serif;
+}
+
+p {
+    font-family: "Arial Rounded MT", sans-serif;
 }
