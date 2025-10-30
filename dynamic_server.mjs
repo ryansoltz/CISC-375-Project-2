@@ -187,9 +187,50 @@ app.get('/years', (req, res) => {
                 console.error("Template read error:", rErr.message);
                 return res.status(500).type('txt').send("Server Error");
             }
-            const type_list = types.map(t => `<li><a href="/year/${encodeURIComponent(t)}">${t}</a></li>`).join('\n');
+            const type_list = types.map(t => `<li><a href="/years/${encodeURIComponent(t)}">${t}</a></li>`).join('\n');
             return res.status(200).type('html').send(data.replace('$$$TYPE_LIST$$$', type_list));
         });
+    });
+});
+
+// Vehicles by Year
+app.get('/years/:year', (req, res) => {
+    const sql = 'SELECT * FROM electric_vehicles WHERE Year = ?;';
+    console.log('Running query:', sql, 'with value:', req.params.year);
+
+    db.all(sql, [req.params.year], (err, rows) => {
+        if (err) {
+            console.error("SQL ERROR:", err.message);
+            res.status(500).type('txt').send("SQL Error: " + err.message);
+        } else if (!rows || rows.length === 0) {
+            res.status(404).type('txt').send(`Error: no data for year "${req.params.year}"`);
+        } else {
+            fs.readFile(path.join(template_dir, 'year.html'), { encoding: 'utf8' }, (err, data) => {
+                if (err) {
+                    console.error("Template Read Error:", err.message);
+                    res.status(500).type('txt').send("Template Read Error");
+                } else {
+                    let vehicle_rows = '';
+                    for (let i = 0; i < rows.length; i++) {
+                        vehicle_rows += '<tr>';
+                        vehicle_rows += '<td>' + rows[i].Make + '</td>';
+                        vehicle_rows += '<td>' + rows[i].Model + '</td>';
+                        vehicle_rows += '<td>' + rows[i].Year + '</td>';
+                        vehicle_rows += '<td>' + rows[i].Region + '</td>';
+                        vehicle_rows += '<td>' + rows[i].Range + '</td>';
+                        vehicle_rows += '<td>' + rows[i].Battery_Capacity + '</td>';
+                        vehicle_rows += '<td>' + rows[i].Energy_Consumption + '</td>';
+                        vehicle_rows += '<td>' + rows[i].C02_Saved + '</td>';
+                        vehicle_rows += '</tr>';
+                    }
+
+                    let response = data
+                        .replace('$$$YEAR$$$', req.params.year)
+                        .replace('$$$YEAR_ROWS$$$', vehicle_rows);
+                    res.status(200).type('html').send(response);
+                }
+            });
+        }
     });
 });
 
