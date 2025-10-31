@@ -7,6 +7,11 @@ body {
 h1 {
     font-size: 2rem;
     font-family: Tahoma, sans-serif;
+    text-align: center;
+}
+
+ul {
+    font-family: "Arial Rounded MT", sans-serif;
 }
 
 li {
@@ -27,4 +32,17 @@ tr {
 
 h2 {
     font-family: "Arial Rounded MT", sans-serif;
+}
+
+nav {
+    text-align: center;
+}
+
+
+.pager {
+    text-align: center;
+}
+
+ul.top li {
+    display: inline-block;
 }

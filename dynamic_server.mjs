@@ -18,6 +18,8 @@ const db = new sqlite3.Database('./electric_vehicles.db', sqlite3.OPEN_READONLY,
     }
 });
 
+let nav_list;
+
 //
 // HOME PAGE – list distinct vehicle types
 //
@@ -82,6 +84,7 @@ app.get('/vehicles/:vehicle_type', (req, res) => {
                     }
 
                     let response = data
+                        .replace('$$$NAV$$$', nav_list)
                         .replace('$$$VEHICLE_TYPE$$$', req.params.vehicle_type)
                         .replace('$$$VEHICLE_ROWS$$$', vehicle_rows);
                     res.status(200).type('html').send(response);
@@ -108,10 +111,13 @@ app.get('/regions', (req, res) => {
             const region_list = regions
                 .map(r => `<li><a href="/regions/${encodeURIComponent(r)}">${r}</a></li>`)
                 .join('\n');
+            nav_list = region_list;
             res.status(200).type('html').send(data.replace('$$$REGION_LIST$$$', region_list));
         });
     });
 });
+
+
 
 //
 // === NEW: VEHICLES BY REGION ===
@@ -127,7 +133,7 @@ app.get('/regions/:region', (req, res) => {
         } else if (!rows || rows.length === 0) {
             res.status(404).type('txt').send(`Error: no data for region "${req.params.region}"`);
         } else {
-            fs.readFile(path.join(template_dir, 'vehicles.html'), { encoding: 'utf8' }, (err, data) => {
+            fs.readFile(path.join(template_dir, 'region.html'), { encoding: 'utf8' }, (err, data) => {
                 if (err) {
                     console.error("Template Read Error:", err.message);
                     res.status(500).type('txt').send("Template Read Error");
@@ -147,7 +153,8 @@ app.get('/regions/:region', (req, res) => {
                     }
 
                     let response = data
-                        .replace('$$$VEHICLE_TYPE$$$', req.params.region)
+                        .replace('$$$NAV$$$', nav_list)
+                        .replace('$$$REGION$$$', req.params.region)
                         .replace('$$$VEHICLE_ROWS$$$', vehicle_rows);
                     res.status(200).type('html').send(response);
                 }
@@ -155,6 +162,7 @@ app.get('/regions/:region', (req, res) => {
         }
     });
 });
+
 
 //
 // === NEW: TYPES PAGE (still works) ===
@@ -170,10 +178,14 @@ app.get('/types', (req, res) => {
                 return res.status(500).type('txt').send("Server Error");
             }
             const type_list = types.map(t => `<li><a href="/vehicles/${encodeURIComponent(t)}">${t}</a></li>`).join('\n');
+            nav_list = type_list;
             return res.status(200).type('html').send(data.replace('$$$TYPE_LIST$$$', type_list));
         });
     });
 });
+
+
+
 
 // Years Page
 app.get('/years', (req, res) => {
@@ -187,8 +199,9 @@ app.get('/years', (req, res) => {
                 console.error("Template read error:", rErr.message);
                 return res.status(500).type('txt').send("Server Error");
             }
-            const type_list = types.map(t => `<li><a href="/years/${encodeURIComponent(t)}">${t}</a></li>`).join('\n');
-            return res.status(200).type('html').send(data.replace('$$$TYPE_LIST$$$', type_list));
+            const year_list = types.map(t => `<li><a href="/years/${encodeURIComponent(t)}">${t}</a></li>`).join('\n');
+            nav_list = year_list;
+            return res.status(200).type('html').send(data.replace('$$$YEAR_LIST$$$', year_list));
         });
     });
 });
@@ -225,6 +238,7 @@ app.get('/years/:year', (req, res) => {
                     }
 
                     let response = data
+                        .replace('$$$NAV$$$', nav_list)
                         .replace('$$$YEAR$$$', req.params.year)
                         .replace('$$$YEAR_ROWS$$$', vehicle_rows);
                     res.status(200).type('html').send(response);
