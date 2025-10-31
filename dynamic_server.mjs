@@ -19,6 +19,67 @@ const db = new sqlite3.Database('./electric_vehicles.db', sqlite3.OPEN_READONLY,
 });
 
 let nav_list;
+let curr_year;
+let prev_year;
+let next_year;
+let curr_manu;
+let prev_manu;
+let next_manu;
+let curr_type;
+let prev_type;
+let next_type;
+
+function yearCalc() {
+    let currNum = parseInt(curr_year);
+    prev_year = currNum - 1;
+    next_year = currNum + 1;
+    if (prev_year == 2014) {
+        prev_year = 2024
+    }
+    if (next_year == 2025) {
+        next_year = 2015;
+    }
+    prev_year = prev_year.toString();
+    next_year = next_year.toString();
+}
+
+function typeCalc() {
+    if (curr_type == "Hatchback") {
+        prev_type = "Truck"
+        next_type = "SUV"
+    }
+    if (curr_type == "SUV") {
+        prev_type = "Hatchback"
+        next_type = "Sedan"
+    }
+    if (curr_type == "Sedan") {
+        prev_type = "SUV"
+        next_type = "Truck"
+    }
+    if (curr_type == "Truck") {
+        prev_type = "Sedan"
+        next_type = "Hatchback"
+    }
+}
+
+function manuCalc() {
+    if (curr_manu == "Asia") {
+        prev_manu = "North America"
+        next_manu = "Australia"
+    }
+    if (curr_manu == "Australia") {
+        prev_manu = "Asia"
+        next_manu = "Europe"
+    }
+    if (curr_manu == "Europe") {
+        prev_manu = "Australia"
+        next_manu = "North America"
+    }
+    if (curr_manu == "North America") {
+        prev_manu = "Europe"
+        next_manu = "Asia"
+    }
+}
 
 //
 // HOME PAGE – list distinct vehicle types
@@ -82,8 +143,11 @@ app.get('/vehicles/:vehicle_type', (req, res) => {
                         vehicle_rows += '<td>' + rows[i].C02_Saved + '</td>';
                         vehicle_rows += '</tr>';
                     }
-
+                    curr_type = req.params.vehicle_type;
+                    typeCalc();
                     let response = data
+                        .replace('$$$PREV_LINK$$$', '/vehicles/' + prev_type)
+                        .replace('$$$NEXT_LINK$$$', '/vehicles/' + next_type)
                         .replace('$$$NAV$$$', nav_list)
                         .replace('$$$VEHICLE_TYPE$$$', req.params.vehicle_type)
                         .replace('$$$VEHICLE_ROWS$$$', vehicle_rows);
@@ -151,8 +215,11 @@ app.get('/regions/:region', (req, res) => {
                         vehicle_rows += '<td>' + rows[i].C02_Saved + '</td>';
                         vehicle_rows += '</tr>';
                     }
-
+                    curr_manu = req.params.region;
+                    manuCalc();
                     let response = data
+                        .replace('$$$PREV_LINK$$$', '/regions/' + prev_manu)
+                        .replace('$$$NEXT_LINK$$$', '/regions/' + next_manu)
                         .replace('$$$NAV$$$', nav_list)
                         .replace('$$$REGION$$$', req.params.region)
                         .replace('$$$REGION_ROWS$$$', vehicle_rows);
@@ -236,9 +303,12 @@ app.get('/years/:year', (req, res) => {
                         vehicle_rows += '<td>' + rows[i].C02_Saved + '</td>';
                         vehicle_rows += '</tr>';
                     }
-
+                    curr_year = req.params.year;
+                    yearCalc();
                     let response = data
                         .replace('$$$NAV$$$', nav_list)
+                        .replace('$$$PREV_LINK$$$', '/years/' + prev_year)
+                        .replace('$$$NEXT_LINK$$$', '/years/' + next_year)
                         .replace('$$$YEAR$$$', req.params.year)
                         .replace('$$$YEAR_ROWS$$$', vehicle_rows);
                     res.status(200).type('html').send(response);
