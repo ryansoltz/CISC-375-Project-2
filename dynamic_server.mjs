@@ -155,7 +155,7 @@ app.get('/regions/:region', (req, res) => {
                     let response = data
                         .replace('$$$NAV$$$', nav_list)
                         .replace('$$$REGION$$$', req.params.region)
-                        .replace('$$$VEHICLE_ROWS$$$', vehicle_rows);
+                        .replace('$$$REGION_ROWS$$$', vehicle_rows);
                     res.status(200).type('html').send(response);
                 }
             });

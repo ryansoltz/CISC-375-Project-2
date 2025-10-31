@@ -46,3 +46,11 @@ nav {
 ul.top li {
     display: inline-block;
 }
+
+a {
+  color: #2e2e2e;
+}
+
+
+a:visited{color:#2e2e2e}
+a:hover {color:#6e6e6e;}
