@@ -58,6 +58,13 @@ a {
   color: #2e2e2e;
 }
 
+table, th {
+    border: 2px solid black;
+    text-align: center;
+}
+th, td {
+  border-right: 1px solid #000000;
+}
 
 a:visited{color:#2e2e2e}
 a:hover {color:#6e6e6e;}

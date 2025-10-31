@@ -10,7 +10,8 @@
   <body>
     <header>
       <nav>
-      <a href="/">Home</a> 
+      <a href="/">Home</a>  |
+      <a href="/types">Back</a>
       <ul style="display: inline;" class="top">
         Types: $$$NAV$$$
       </ul>
@@ -24,13 +25,12 @@
       |
       <a id="next" href="$$$NEXT_LINK$$$">Next Type ⟩</a>
     </div>
-
+    </br>
     <section>
-      <h2>Vehicles</h2>
-      <table>
+      <table style="margin: auto;">
         <thead>
           <tr>
-            <th>Make</th><th>Model</th><th>Year</th><th>Region</th><th>Range (mi)</th><th>Battery (kWh)</th><th>Energy (kWh/100mi)</th><th>CO₂ Saved (tons)</th><th>Image</th>
+            <th>Make</th><th>Model</th><th>Year</th><th>Region</th><th>Range (mi)</th><th>Battery (kWh)</th><th>Energy (kWh/100mi)</th><th>CO₂ Saved (tons)</th>
           </tr>
         </thead>
         <tbody>
@@ -39,10 +39,12 @@
       </table>
     </section>
 
+    <!--
     <section>
       <h2>Average Range by Year (for this type)</h2>
       <canvas id="rangeChart" width="800" height="300"></canvas>
     </section>
+    -->
 
     <script>
       const labels = $$$CHART_LABELS$$$;
