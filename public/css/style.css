@@ -43,6 +43,13 @@ nav {
     text-align: center;
 }
 
+.lonks {
+    text-align: center; 
+    display: inline; 
+    font-size: 1.25rem;
+}
+
+
 ul.top li {
     display: inline-block;
 }
@@ -54,3 +61,4 @@ a {
 
 a:visited{color:#2e2e2e}
 a:hover {color:#6e6e6e;}
+
